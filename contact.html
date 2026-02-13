@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact |Barani</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            padding-top: 90px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            height: 90px;
+            background-color: #111827 !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            margin: 0 12px;
+            color: white !important;
+        }
+
+        .nav-link:hover {
+            color: #0d6efd !important;
+        }
+
+        .contact-card {
+            background-color: #111827;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(13,110,253,0.4);
+        }
+
+        .form-control {
+            background-color: #020617;
+            border: 1px solid #334155;
+            color: white;
+        }
+
+        .form-control::placeholder {
+            color: #94a3b8;
+        }
+
+        .form-control:focus {
+            background-color: #020617;
+            color: white;
+            border-color: #0d6efd;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">Barani K</a>
+        <div>
+            <a class="nav-link d-inline" href="projects.html">Projects</a>
+            <a class="nav-link d-inline" href="certificates.html">Certificates</a>
+            <a class="nav-link d-inline text-primary" href="contact.html">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- CONTACT SECTION -->
+<div class="container">
+    <h2 class="text-center text-primary mb-4">Contact Me</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="contact-card">
+                <form id="contactForm">
+
+                    <!-- REQUIRED FOR WEB3FORMS -->
+                    <input type="hidden" name="access_key" value="cb78881a-b2fc-4337-8315-906d96d37b8a">
+
+                    <div class="mb-3">
+                        <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea class="form-control" name="message" rows="4" placeholder="Your Message" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-success w-100">
+                        Send Message
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById("contactForm");
+const submitBtn = form.querySelector("button");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = "Sending...";
+    submitBtn.disabled = true;
+
+    try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert("✅ Message sent successfully!");
+            form.reset();
+        } else {
+            alert("❌ Error: " + data.message);
+        }
+
+    } catch (error) {
+        alert("❌ Something went wrong. Try again later.");
+    } finally {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>
